@@ -25,5 +25,5 @@ export const useTilt = () => {
         ref.current.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
     }, []);
 
-    return { ref, handleMouseMove, handleMouseLeave };
+    return [ref, handleMouseMove, handleMouseLeave] as const;
 };

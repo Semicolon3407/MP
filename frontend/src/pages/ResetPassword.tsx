@@ -1,31 +1,32 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, MoveRight, Apple, Shield, Truck, Layers, Check } from 'lucide-react';
+import { Key, ShieldCheck, CheckCircle, Eye, EyeOff, Check, MoveRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../utils';
 
-const SignIn = () => {
+const ResetPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const slides = [
         {
-            Icon: Shield,
-            title: 'Secure Shopping',
-            desc: 'Shop with confidence knowing your data is protected with industry-leading security',
-            features: ['Encrypted Payments', 'Secure Checkout', 'Privacy Protected']
+            Icon: Key,
+            title: 'Strong Password',
+            desc: 'Create a secure password to protect your account',
+            features: ['At least 8 characters', 'Mix of letters & numbers', 'Include special characters']
         },
         {
-            Icon: Layers,
-            title: 'Premium Quality',
-            desc: 'Discover handcrafted mobile cases designed with precision and style for your device',
-            features: ['Lifetime Warranty', 'Free Shipping', '30-Day Returns']
+            Icon: ShieldCheck,
+            title: 'Your Security Matters',
+            desc: 'We take your account security seriously and protect your data',
+            features: ['End-to-End Encryption', 'Two-Factor Authentication', 'Regular Security Audits']
         },
         {
-            Icon: Truck,
-            title: 'Fast Delivery',
-            desc: 'Get your premium cases delivered to your doorstep within 2-3 business days',
-            features: ['Express Shipping Available', 'Track Your Order', 'Secure Packaging']
+            Icon: CheckCircle,
+            title: 'Almost Done!',
+            desc: "You're one step away from securing your account",
+            features: ['Instant Access After Reset', 'All Data Stays Safe', 'Continue Shopping']
         }
     ];
 
@@ -48,26 +49,18 @@ const SignIn = () => {
                         transition={{ duration: 0.6 }}
                     >
                         <div className="mb-12">
-                            <h1 className="text-[2.5rem] font-bold text-white mb-2 tracking-tight">Welcome Back</h1>
-                            <p className="text-[1.0625rem] text-white/70">Sign in to your account to continue your journey</p>
+                            <h1 className="text-[2.5rem] font-bold text-white mb-2 tracking-tight">Reset Password</h1>
+                            <p className="text-[1.0625rem] text-white/70">Create a new secure password for your account</p>
                         </div>
 
                         <form className="space-y-6">
                             <div className="space-y-3">
-                                <label className="text-[0.9375rem] font-medium text-white block">Email Address</label>
-                                <input
-                                    type="email"
-                                    placeholder="your@email.com"
-                                    className="w-full bg-white/[0.03] border border-white/10 rounded-lg py-3.5 px-5 text-base text-white placeholder:text-white/20 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all font-inter"
-                                />
-                            </div>
-
-                            <div className="space-y-3">
-                                <label className="text-[0.9375rem] font-medium text-white block">Password</label>
+                                <label className="text-[0.9375rem] font-medium text-white block">New Password</label>
                                 <div className="relative group">
                                     <input
                                         type={showPassword ? 'text' : 'password'}
-                                        placeholder="Enter your password"
+                                        placeholder="Enter new password"
+                                        required
                                         className="w-full bg-white/[0.03] border border-white/10 rounded-lg py-3.5 pl-5 pr-12 text-base text-white placeholder:text-white/20 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all font-inter"
                                     />
                                     <button
@@ -78,49 +71,38 @@ const SignIn = () => {
                                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                     </button>
                                 </div>
+                                <span className="block text-[0.875rem] text-white/40 mt-1">At least 8 characters with letters and numbers</span>
                             </div>
 
-                            <div className="flex items-center justify-between pt-1">
-                                <label className="flex items-center gap-3 cursor-pointer select-none">
-                                    <div className="relative flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            className="peer appearance-none w-5 h-5 rounded border border-white/20 bg-white/10 checked:bg-accent checked:border-accent transition-all cursor-pointer"
-                                        />
-                                        <Check className="absolute w-3.5 h-3.5 text-white left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity" />
-                                    </div>
-                                    <span className="text-[0.9375rem] text-white/90">Remember me</span>
-                                </label>
-                                <Link to="/forgot-password" className="text-[0.9375rem] text-accent hover:text-accent-secondary transition-colors font-medium">Forgot Password?</Link>
+                            <div className="space-y-3">
+                                <label className="text-[0.9375rem] font-medium text-white block">Confirm Password</label>
+                                <div className="relative group">
+                                    <input
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        placeholder="Confirm new password"
+                                        required
+                                        className="w-full bg-white/[0.03] border border-white/10 rounded-lg py-3.5 pl-5 pr-12 text-base text-white placeholder:text-white/20 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all font-inter"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute right-0 top-1/2 -translate-y-1/2 p-3.5 text-white/30 hover:text-white/60 transition-colors"
+                                    >
+                                        {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                    </button>
+                                </div>
                             </div>
 
                             <button className="w-full bg-gradient-to-r from-[#9333ea] to-[#ed4899] text-white font-bold text-[1.0625rem] py-4 rounded-xl transition-all hover:brightness-110 active:scale-[0.99] flex items-center justify-center gap-2 mt-4 shadow-lg shadow-purple-900/20">
-                                Sign In
+                                <span>Reset Password</span>
                                 <MoveRight size={18} />
                             </button>
                         </form>
 
-                        <div className="relative my-10 flex items-center">
-                            <div className="flex-grow border-t border-white/10"></div>
-                            <span className="flex-shrink mx-4 text-[0.9375rem] text-white/30 font-medium">or continue with</span>
-                            <div className="flex-grow border-t border-white/10"></div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <button className="flex items-center justify-center gap-3 py-3.5 bg-white/[0.03] border border-white/10 rounded-xl text-white font-semibold text-[0.9375rem] hover:bg-white/[0.08] transition-all">
-                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
-                                Google
-                            </button>
-                            <button className="flex items-center justify-center gap-3 py-3.5 bg-white/[0.03] border border-white/10 rounded-xl text-white font-semibold text-[0.9375rem] hover:bg-white/[0.08] transition-all">
-                                <Apple size={20} fill="currentColor" />
-                                Apple
-                            </button>
-                        </div>
-
                         <div className="mt-12 text-center">
                             <p className="text-[0.9375rem] text-white/60">
-                                Don't have an account? {' '}
-                                <Link to="/signup" className="text-accent font-bold hover:text-accent-secondary transition-colors">Sign Up</Link>
+                                Remember your password? {' '}
+                                <Link to="/signin" className="text-accent font-bold hover:text-accent-secondary transition-colors">Sign In</Link>
                             </p>
                         </div>
                     </motion.div>
@@ -132,7 +114,7 @@ const SignIn = () => {
                 {/* Decorative background gradients */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#080f48] via-[#0b135e] to-[#121b7a]" />
                 <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-accent/20 blur-[120px] rounded-full animate-float-orb" style={{ '--dur': '20s' } as React.CSSProperties} />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 blur-[100px] rounded-full animate-float-orb" style={{ '--dur': '24s', '--delay': '10s' } as React.CSSProperties} />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 blur-[100px] rounded-full animate-float-orb" style={{ '--dur': '24s', '--delay': '2s' } as React.CSSProperties} />
 
                 <div className="relative z-10 w-full max-w-[480px] px-10">
                     <div className="relative min-h-[500px] flex flex-col items-center">
@@ -197,4 +179,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default ResetPassword;

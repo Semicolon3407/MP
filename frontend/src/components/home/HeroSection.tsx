@@ -4,12 +4,18 @@ import { useTilt } from '../../hooks/useTilt';
 import HeroCardSlider from './HeroCardSlider';
 import { cn } from '../../utils';
 
+const scanLines = [...Array(8)].map((_, i) => ({
+    left: `${(i + 1) * 12}%`,
+    dur: `${3 + Math.random() * 2}s`,
+    delay: `${-Math.random() * 5}s`
+}));
+
 const HeroSection = () => {
-    const brandTilt = useTilt();
-    const card1Tilt = useTilt();
-    const card2Tilt = useTilt();
-    const card3Tilt = useTilt();
-    const card4Tilt = useTilt();
+    const [brandRef, brandMove, brandLeave] = useTilt();
+    const [card1Ref, card1Move, card1Leave] = useTilt();
+    const [card2Ref, card2Move, card2Leave] = useTilt();
+    const [card3Ref, card3Move, card3Leave] = useTilt();
+    const [card4Ref, card4Move, card4Leave] = useTilt();
 
     const particles = [
         { id: 1, top: '10%', left: '10%', type: 'dot', color: 'accent', delay: 0 },
@@ -30,9 +36,9 @@ const HeroSection = () => {
         <section className="relative min-h-[85vh] pt-6 pb-20 overflow-hidden flex items-center bg-[#040b3a]">
             {/* ── Floating Background Orbs ── */}
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-                <div className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] bg-accent/20 blur-[110px] rounded-full animate-float-orb" style={{ '--dur': '28s' } as any} />
-                <div className="absolute bottom-[-15%] left-[-12%] w-[550px] h-[550px] bg-accent-secondary/20 blur-[110px] rounded-full animate-float-orb" style={{ '--dur': '28s', '--delay': '9s' } as any} />
-                <div className="absolute top-[40%] left-[40%] w-[500px] h-[500px] bg-accent/15 blur-[110px] rounded-full animate-float-orb" style={{ '--dur': '28s', '--delay': '18s' } as any} />
+                <div className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] bg-accent/20 blur-[110px] rounded-full animate-float-orb" style={{ '--dur': '28s' } as React.CSSProperties} />
+                <div className="absolute bottom-[-15%] left-[-12%] w-[550px] h-[550px] bg-accent-secondary/20 blur-[110px] rounded-full animate-float-orb" style={{ '--dur': '28s', '--delay': '9s' } as React.CSSProperties} />
+                <div className="absolute top-[40%] left-[40%] w-[500px] h-[500px] bg-accent/15 blur-[110px] rounded-full animate-float-orb" style={{ '--dur': '28s', '--delay': '18s' } as React.CSSProperties} />
 
                 {/* AI Grid Background */}
                 <div className="absolute inset-0 z-0 opacity-40"
@@ -43,13 +49,13 @@ const HeroSection = () => {
                         WebkitMaskImage: 'radial-gradient(ellipse 90% 80% at 50% 50%, black 40%, transparent 100%)'
                     }}
                 >
-                    {[...Array(8)].map((_, i) => (
+                    {scanLines.map((props, i) => (
                         <div key={i} className="animate-scan absolute w-[2px] h-[120px] bg-gradient-to-b from-transparent via-accent to-transparent"
                             style={{
-                                left: `${(i + 1) * 12}%`,
-                                '--dur': `${3 + Math.random() * 2}s`,
-                                '--delay': `${-Math.random() * 5}s`
-                            } as any}
+                                left: props.left,
+                                '--dur': props.dur,
+                                '--delay': props.delay
+                            } as React.CSSProperties}
                         />
                     ))}
                 </div>
@@ -63,9 +69,9 @@ const HeroSection = () => {
                         initial={{ opacity: 0, y: 28, scale: 0.97 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                        ref={brandTilt.ref}
-                        onMouseMove={brandTilt.handleMouseMove}
-                        onMouseLeave={brandTilt.handleMouseLeave}
+                        ref={brandRef}
+                        onMouseMove={brandMove}
+                        onMouseLeave={brandLeave}
                         className="col-span-12 md:col-span-3 row-span-2 rounded-[20px] p-8 flex flex-col justify-end gap-6 shadow-2xl border border-accent/30 relative overflow-hidden group/brand"
                         style={{
                             background: 'linear-gradient(160deg, rgba(137, 92, 242, 0.2) 0%, rgba(236, 72, 153, 0.07) 60%, transparent 100%), linear-gradient(135deg, #040b3a 0%, #080f52 50%, #06093d 100%)'
@@ -151,9 +157,9 @@ const HeroSection = () => {
                         initial={{ opacity: 0, y: 28, scale: 0.97 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-                        ref={card1Tilt.ref}
-                        onMouseMove={card1Tilt.handleMouseMove}
-                        onMouseLeave={card1Tilt.handleMouseLeave}
+                        ref={card1Ref}
+                        onMouseMove={card1Move}
+                        onMouseLeave={card1Leave}
                         className="col-span-12 md:col-span-3 row-span-2 group relative rounded-[20px] bg-[#050930] border border-accent/30 hover:border-accent/55 transition-all duration-400 overflow-visible"
                     >
                         <HeroCardSlider images={['/assets/images/phone-accessories1.png', '/assets/images/phone-accessories2.png', '/assets/images/phone-accessories3.png']} />
@@ -167,9 +173,9 @@ const HeroSection = () => {
                         initial={{ opacity: 0, y: 28, scale: 0.97 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         transition={{ duration: 0.7, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-                        ref={card2Tilt.ref}
-                        onMouseMove={card2Tilt.handleMouseMove}
-                        onMouseLeave={card2Tilt.handleMouseLeave}
+                        ref={card2Ref}
+                        onMouseMove={card2Move}
+                        onMouseLeave={card2Leave}
                         className="col-span-12 md:col-span-6 row-span-1 group relative rounded-[20px] bg-[#050930] border border-accent/20 hover:border-accent/55 transition-all duration-400 overflow-visible"
                     >
                         <HeroCardSlider images={['/assets/images/all-mobile-cases1.png', '/assets/images/mobile-case2.png', '/assets/images/mobile-case3.png']} />
@@ -183,9 +189,9 @@ const HeroSection = () => {
                         initial={{ opacity: 0, y: 28, scale: 0.97 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         transition={{ duration: 0.7, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                        ref={card3Tilt.ref}
-                        onMouseMove={card3Tilt.handleMouseMove}
-                        onMouseLeave={card3Tilt.handleMouseLeave}
+                        ref={card3Ref}
+                        onMouseMove={card3Move}
+                        onMouseLeave={card3Leave}
                         className="col-span-6 md:col-span-3 row-span-1 group relative rounded-[20px] bg-[#050930] border border-accent/20 hover:border-accent/55 transition-all duration-400 overflow-visible"
                     >
                         <HeroCardSlider images={['/assets/images/airpods.png', '/assets/images/airpod-case2.png', '/assets/images/airpod-case3.png']} />
@@ -199,9 +205,9 @@ const HeroSection = () => {
                         initial={{ opacity: 0, y: 28, scale: 0.97 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         transition={{ duration: 0.7, delay: 0.40, ease: [0.22, 1, 0.36, 1] }}
-                        ref={card4Tilt.ref}
-                        onMouseMove={card4Tilt.handleMouseMove}
-                        onMouseLeave={card4Tilt.handleMouseLeave}
+                        ref={card4Ref}
+                        onMouseMove={card4Move}
+                        onMouseLeave={card4Leave}
                         className="col-span-6 md:col-span-3 row-span-1 group relative rounded-[20px] bg-[#050930] border border-accent/20 hover:border-accent/55 transition-all duration-400 overflow-visible"
                     >
                         <HeroCardSlider images={['/assets/images/watch-straps.png', '/assets/images/watch-strap2.png', '/assets/images/watch-strap3.png']} />

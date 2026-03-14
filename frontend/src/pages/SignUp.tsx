@@ -34,7 +34,7 @@ const SignUp = () => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
         }, 5000);
         return () => clearInterval(timer);
-    }, []);
+    }, [slides.length]);
 
     return (
         <div className="min-h-screen bg-[#040b3a] flex flex-col lg:flex-row overflow-hidden font-inter">
@@ -149,8 +149,8 @@ const SignUp = () => {
             <div className="hidden lg:flex w-full lg:w-[40%] bg-[#080f52] relative items-center justify-center overflow-hidden min-h-screen">
                 {/* Decorative background gradients */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#080f48] via-[#0b135e] to-[#121b7a]" />
-                <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-accent/20 blur-[120px] rounded-full animate-float-orb" style={{ '--dur': '20s' } as any} />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 blur-[100px] rounded-full animate-float-orb" style={{ '--dur': '24s', '--delay': '10s' } as any} />
+                <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-accent/20 blur-[120px] rounded-full animate-float-orb" style={{ '--dur': '20s' } as React.CSSProperties} />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 blur-[100px] rounded-full animate-float-orb" style={{ '--dur': '24s', '--delay': '10s' } as React.CSSProperties} />
 
                 <div className="relative z-10 w-full max-w-[480px] px-10">
                     <div className="relative min-h-[500px] flex flex-col items-center">

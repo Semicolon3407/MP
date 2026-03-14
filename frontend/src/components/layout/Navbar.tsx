@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, User, ChevronRight, ChevronDown } from 'lucide-react';
+import { Search, ShoppingCart, User, ChevronRight, ChevronDown, Heart } from 'lucide-react';
 import { cn } from '../../utils';
+import SearchModal from './SearchModal';
+
+interface NavSeries { name: string; href: string; }
+interface NavModel { id: string; name: string; series: NavSeries[]; }
+interface NavBrand { id: string; name: string; logo?: string; models: NavModel[]; }
 
 interface MobileMenuSlide {
     id: string;
     title: string;
-    data?: any;
+    data?: NavBrand | NavModel | null;
 }
 
 const PHONE_CASES_DATA = {
@@ -134,8 +139,9 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [mobileMenuStack, setMobileMenuStack] = useState<MobileMenuSlide[]>([{ id: 'main', title: 'Menu' }]);
-    const [activeBrand, setActiveBrand] = useState<any>(null);
-    const [activeModel, setActiveModel] = useState<any>(null);
+    const [activeBrand, setActiveBrand] = useState<NavBrand | null>(null);
+    const [activeModel, setActiveModel] = useState<NavModel | null>(null);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -145,7 +151,7 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const pushMobileMenu = (id: string, title: string, data?: any) => {
+    const pushMobileMenu = (id: string, title: string, data?: NavBrand | NavModel | null) => {
         setMobileMenuStack([...mobileMenuStack, { id, title, data }]);
     };
 
@@ -259,12 +265,22 @@ const Navbar = () => {
 
                     {/* Right: Actions */}
                     <div className="flex items-center gap-2 md:gap-3">
-                        <button className="p-2.5 lg:p-3 bg-white/5 border border-glass-border/30 rounded-xl text-text-primary hover:bg-glass-border hover:shadow-glow transition-all active:scale-95 group">
+                        <button 
+                            onClick={() => setIsSearchOpen(true)}
+                            className="p-2.5 lg:p-3 bg-white/5 border border-glass-border/30 rounded-xl text-text-primary hover:bg-glass-border hover:shadow-glow transition-all active:scale-95 group"
+                        >
                             <Search size={19} className="group-hover:scale-110 transition-transform" />
                         </button>
 
                         <Link to="/signin" className="p-2.5 lg:p-3 bg-white/5 border border-glass-border/30 rounded-xl text-text-primary hover:bg-glass-border hover:shadow-glow transition-all active:scale-95 group">
                             <User size={19} className="group-hover:scale-110 transition-transform" />
+                        </Link>
+
+                        <Link to="/wishlist" className="relative p-2.5 lg:p-3 bg-white/5 border border-glass-border/30 rounded-xl text-text-primary hover:bg-glass-border hover:shadow-glow transition-all active:scale-95 group">
+                            <Heart size={19} className="group-hover:scale-110 transition-transform" />
+                            <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 bg-gradient-to-r from-accent to-accent-secondary rounded-full text-[10px] font-black flex items-center justify-center text-white shadow-[0_2px_8px_rgba(137,92,242,0.4)] animate-gradient-shift bg-[length:200%_auto]">
+                                4
+                            </span>
                         </Link>
 
                         <Link to="/cart" className="relative p-2.5 lg:p-3 bg-white/5 border border-glass-border/30 rounded-xl text-text-primary hover:bg-glass-border hover:shadow-glow transition-all active:scale-95 group">
@@ -360,7 +376,7 @@ const Navbar = () => {
                                 </button>
                                 <h3 className="text-white font-bold text-lg mb-4">{currentMenu.title}</h3>
                                 <div className="flex flex-col gap-1">
-                                    {currentMenu.data?.models.map((model: any) => (
+                                    {((currentMenu.data as NavBrand)?.models || []).map((model: NavModel) => (
                                         <button
                                             key={model.id}
                                             onClick={() => pushMobileMenu('series', model.name, model)}
@@ -383,7 +399,7 @@ const Navbar = () => {
                                 </button>
                                 <h3 className="text-white font-bold text-lg mb-4">{currentMenu.title}</h3>
                                 <div className="flex flex-col gap-1">
-                                    {currentMenu.data?.series.map((item: any) => (
+                                    {((currentMenu.data as NavModel)?.series || []).map((item: NavSeries) => (
                                         <Link
                                             key={item.name}
                                             to={item.href}
@@ -411,6 +427,8 @@ const Navbar = () => {
                     </div>
                 </div>
             </nav>
+
+            <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
         </>
     );
 };
